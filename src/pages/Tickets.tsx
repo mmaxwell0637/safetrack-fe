@@ -1,11 +1,12 @@
 // src/pages/Dashboard.tsx
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import type { Ticket, Status, Priority } from "../lib/schemas";
 import { API } from "../lib/api";
+import { useNavigate } from "react-router-dom"; // ✅ add
 
 // UI-only category (not stored in shared Ticket yet)
 type Category = "Technical" | "Billing" | "Account" | "Other";
+
 // Local shape = shared Ticket + UI category
 type LocalTicket = Ticket & { category: Category };
 
@@ -30,7 +31,7 @@ function adapt(t: any): LocalTicket {
   };
 }
 
-// ---- Pills ----------------------------------------------------------
+// ---- Pills ---------------------------------------------------
 function StatusPill({ s }: { s: Status }) {
   const map: Record<Status, string> = {
     Pending: "status-pending",
@@ -40,6 +41,7 @@ function StatusPill({ s }: { s: Status }) {
   };
   return <span className={map[s]}>{s}</span>;
 }
+
 function PriorityPill({ p }: { p: Priority }) {
   const map: Record<Priority, string> = {
     Low: "inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-emerald-50 text-emerald-700",
@@ -49,16 +51,9 @@ function PriorityPill({ p }: { p: Priority }) {
   return <span className={map[p]}>{p}</span>;
 }
 
-// ---- API helpers ----------------------------------------------------
-async function patchStatus(id: string, status: Status) {
-  // Works with an API helper that accepts (method, path, body)
-  // If your helper differs, adjust here.
-  // @ts-ignore
-  return API.patch ? API.patch(`/tickets/${id}`, { status }) : API.request?.("PATCH", `/tickets/${id}`, { status });
-}
-
 export default function Dashboard() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ add
+  const open = (id: string) => navigate(`/tickets/${id}`); // ✅ add
 
   const [rows, setRows] = useState<LocalTicket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,7 +69,7 @@ export default function Dashboard() {
     let alive = true;
     (async () => {
       try {
-        const data = await API.getTickets(); // /api/tickets
+        const data = await API.getTickets();
         if (!alive) return;
         setRows((data as any[]).map(adapt));
       } catch (e: any) {
@@ -205,56 +200,21 @@ export default function Dashboard() {
                   {filtered.map((t) => (
                     <tr
                       key={t.id}
-                      onClick={() => navigate(`/tickets/${t.id}`)}
-                      onKeyDown={(e) => e.key === "Enter" && navigate(`/tickets/${t.id}`)}
-                      className="hover:bg-slate-50 cursor-pointer"
-                      role="button"
-                      tabIndex={0}
+                      className="hover:bg-slate-50 cursor-pointer"         // ✅ clickable row style
+                      onClick={() => open(t.id)}                             // ✅ navigate to detail
+                      title="View ticket details"
                     >
-                      <td className="px-4 py-3 border-t font-medium">{t.id}</td>
+                      <td className="px-4 py-3 border-t font-medium text-sky-700 underline">
+                        {t.id}
+                      </td>
                       <td className="px-4 py-3 border-t">{t.subject}</td>
                       <td className="px-4 py-3 border-t">{t.requester}</td>
                       <td className="px-4 py-3 border-t">
                         {t.assignee ?? <span className="text-slate-400">—</span>}
                       </td>
-
-                      {/* Inline editable status (stops row navigation when using the select) */}
-                      <td
-                        className="px-4 py-3 border-t"
-                        onClick={(e) => e.stopPropagation()}
-                        onKeyDown={(e) => e.stopPropagation()}
-                      >
-                        <div className="flex items-center gap-2">
-                          <StatusPill s={t.status} />
-                          <select
-                            aria-label="Update ticket status"
-                            value={t.status}
-                            onChange={async (e) => {
-                              const s = e.target.value as Status;
-                              // optimistic update
-                              setRows((prev) =>
-                                prev.map((r) => (r.id === t.id ? { ...r, status: s } : r))
-                              );
-                              try {
-                                await patchStatus(t.id, s);
-                              } catch {
-                                // revert on error
-                                setRows((prev) =>
-                                  prev.map((r) => (r.id === t.id ? { ...r, status: t.status } : r))
-                                );
-                                alert("Failed to update status.");
-                              }
-                            }}
-                            className="select"
-                          >
-                            <option>Pending</option>
-                            <option>In Progress</option>
-                            <option>Resolved</option>
-                            <option>Unassigned</option>
-                          </select>
-                        </div>
+                      <td className="px-4 py-3 border-t">
+                        <StatusPill s={t.status} />
                       </td>
-
                       <td className="px-4 py-3 border-t">
                         <PriorityPill p={t.priority} />
                       </td>

@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+__MACOSX/safetrack-fe/._.DS_Store
+/__MACOSX

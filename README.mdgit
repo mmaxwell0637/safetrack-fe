@@ -1,0 +1,2 @@
+"# safetrack-fe"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/mmaxwell0637/safetrack-fe.gitgit push -u origin main
+"# safetrack-fe"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/mmaxwell0637/safetrack-fe.gitgit push -u origin main

@@ -5,7 +5,12 @@ import Dashboard from "./pages/Dashboard";
 import TicketNew from "./pages/TicketNew";
 import Chat from "./pages/Chat";
 import ProtectedRoute from "./lib/ProtectedRoute";
-import { AuthProvider } from "./lib/auth"; // 👈 Wrap your app with global auth
+import { AuthProvider } from "./lib/auth";
+import { Toaster } from "react-hot-toast";
+import TicketReceipt from "./pages/TicketReceipt"; // ✅ Added receipt page
+import Tickets from "./pages/Tickets";          // 🆕
+import TicketDetail from "./pages/TicketDetail"; // 🆕
+
 import "./App.css";
 
 export default function App() {
@@ -15,15 +20,21 @@ export default function App() {
         <Navbar />
         <div style={{ padding: 16 }}>
           <Routes>
-            {/* Redirect root to login */}
+            {/* Default route → redirect to login */}
             <Route path="/" element={<Navigate to="/login" replace />} />
 
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/tickets/new" element={<TicketNew />} />
+            <Route path="/tickets" element={<Tickets />} />            {/* list */}
+           
             <Route path="/chat" element={<Chat />} />
+            <Route path="/tickets/:id" element={<TicketDetail />} />
 
-            {/* Protected route (only employees can access Dashboard) */}
+            {/* ✅ Receipt route (for printable ticket confirmation) */}
+            <Route path="/tickets/:id/receipt" element={<TicketReceipt />} />
+
+            {/* Protected routes */}
             <Route
               path="/dashboard"
               element={
@@ -33,10 +44,13 @@ export default function App() {
               }
             />
 
-            {/* Fallback route */}
+            {/* Fallback for unknown paths */}
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>
         </div>
+
+        {/* ✅ Global toast notifications */}
+        <Toaster position="top-center" />
       </div>
     </AuthProvider>
   );
