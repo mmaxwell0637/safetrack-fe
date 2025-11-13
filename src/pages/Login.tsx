@@ -45,99 +45,225 @@ export default function Login() {
   }
 
   return (
-    <div className="container-page flex items-center">
-      <div className="w-full max-w-md mx-auto p-6">
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#f8fafc",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 20px",
+        fontFamily: "Inter, sans-serif",
+      }}
+    >
+      {/* ✅ White card container with SafeTrack blue styling */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "420px",
+          background: "#fff",
+          borderRadius: "16px",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+          padding: "40px 32px",
+        }}
+      >
         {/* Brand */}
-        <div className="mb-6 text-center">
-          <div className="inline-flex items-center gap-2">
+        <div style={{ textAlign: "center", marginBottom: "28px" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/")}
+            title="Go to Landing Page"
+          >
             <Logo size={36} />
-            <span className="text-xl font-bold text-slate-900">SafeTrack</span>
+            <span style={{ fontSize: "1.4em", fontWeight: 700, color: "#1E293B" }}>
+              SafeTrack<span style={{ color: "#2563EB" }}>™</span>
+            </span>
           </div>
-          <h1 className="mt-4 page-title !text-2xl">Sign in</h1>
-          <p className="text-sm text-slate-500">Customers &amp; employees sign in here.</p>
+          <h1
+            style={{
+              marginTop: "18px",
+              fontSize: "1.6em",
+              fontWeight: 700,
+              color: "#1E293B",
+            }}
+          >
+            Sign In
+          </h1>
+          <p style={{ fontSize: "0.9em", color: "#64748B" }}>
+            Customers &amp; employees sign in here.
+          </p>
         </div>
 
         {/* Card */}
-        <form onSubmit={onSubmit} className="card card-pad space-y-4">
+        <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
           {/* Role */}
-          <div className="flex items-center justify-between gap-2">
-            <label className="text-sm font-medium text-slate-700">I am a</label>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setRole("customer")}
-                className={`btn-chip ${role === "customer" ? "border-sky-300 bg-sky-50 text-sky-800" : "border-slate-300 text-slate-700"}`}
-              >
-                Customer
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("employee")}
-                className={`btn-chip ${role === "employee" ? "border-sky-300 bg-sky-50 text-sky-800" : "border-slate-300 text-slate-700"}`}
-              >
-                Employee
-              </button>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <label style={{ fontSize: "0.9em", fontWeight: 600, color: "#334155" }}>I am a</label>
+            <div style={{ display: "flex", gap: "8px" }}>
+              {["customer", "employee"].map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setRole(r as "customer" | "employee")}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "8px",
+                    border: role === r ? "2px solid #2563EB" : "1px solid #CBD5E1",
+                    background: role === r ? "#EFF6FF" : "white",
+                    color: role === r ? "#2563EB" : "#475569",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {r === "customer" ? "Customer" : "Employee"}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-slate-700">Email</label>
+            <label style={{ fontSize: "0.9em", fontWeight: 600, color: "#334155" }}>Email</label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               autoComplete="email"
               placeholder="you@company.com"
-              className={`input mt-1 ${errors.email ? "border-rose-300 focus:ring-rose-300" : ""}`}
+              style={{
+                marginTop: "6px",
+                width: "100%",
+                padding: "10px 14px",
+                borderRadius: "8px",
+                border: errors.email ? "1px solid #FCA5A5" : "1px solid #CBD5E1",
+                outline: "none",
+                fontSize: "0.95em",
+              }}
             />
-            {errors.email && <p className="mt-1 text-xs text-rose-600">{errors.email}</p>}
+            {errors.email && (
+              <p style={{ marginTop: "4px", fontSize: "0.8em", color: "#DC2626" }}>{errors.email}</p>
+            )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-slate-700">Password</label>
-            <div className="mt-1 relative">
+            <label style={{ fontSize: "0.9em", fontWeight: 600, color: "#334155" }}>Password</label>
+            <div style={{ position: "relative", marginTop: "6px" }}>
               <input
                 value={pwd}
                 onChange={(e) => setPwd(e.target.value)}
                 type={showPwd ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="••••••••"
-                className={`input pr-10 ${errors.pwd ? "border-rose-300 focus:ring-rose-300" : ""}`}
+                style={{
+                  width: "100%",
+                  padding: "10px 38px 10px 14px",
+                  borderRadius: "8px",
+                  border: errors.pwd ? "1px solid #FCA5A5" : "1px solid #CBD5E1",
+                  outline: "none",
+                  fontSize: "0.95em",
+                }}
               />
               <button
                 type="button"
                 aria-label={showPwd ? "Hide password" : "Show password"}
                 onClick={() => setShowPwd((s) => !s)}
-                className="absolute inset-y-0 right-2 my-auto text-slate-500 hover:text-slate-700"
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "1.2em",
+                  color: "#64748B",
+                }}
               >
                 {showPwd ? "🙈" : "👁️"}
               </button>
             </div>
-            {errors.pwd && <p className="mt-1 text-xs text-rose-600">{errors.pwd}</p>}
+            {errors.pwd && (
+              <p style={{ marginTop: "4px", fontSize: "0.8em", color: "#DC2626" }}>{errors.pwd}</p>
+            )}
           </div>
 
           {/* Extras */}
-          <div className="flex items-center justify-between text-sm">
-            <label className="inline-flex items-center gap-2 text-slate-600">
-              <input type="checkbox" className="rounded border-slate-300" /> Remember me
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              fontSize: "0.85em",
+              color: "#475569",
+            }}
+          >
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <input type="checkbox" style={{ accentColor: "#2563EB" }} /> Remember me
             </label>
-            <Link to="/chat" className="text-sky-700 hover:underline">
+            <Link to="/chat" style={{ color: "#2563EB", textDecoration: "none" }}>
               Need help?
             </Link>
           </div>
 
           {/* Submit */}
-          <button type="submit" disabled={loading} className={`btn-primary w-full ${loading ? "bg-sky-400" : ""}`}>
-            {loading ? "Signing in…" : "Sign in"}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              padding: "12px 24px",
+              width: "100%",
+              background: loading ? "#60A5FA" : "#2563EB",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "1em",
+              fontWeight: 600,
+              cursor: loading ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) =>
+              !loading && (e.currentTarget.style.background = "#1E40AF")
+            }
+            onMouseOut={(e) =>
+              !loading && (e.currentTarget.style.background = "#2563EB")
+            }
+          >
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
         {/* Footer */}
-        <p className="mt-4 text-center text-sm text-slate-500">
-          Don’t have an account? <span className="text-slate-700">Ask an admin to invite you.</span>
-        </p>
+        <div style={{ marginTop: "22px", textAlign: "center", fontSize: "0.9em" }}>
+          <p style={{ color: "#475569" }}>
+            Don’t have an account?{" "}
+            <span style={{ color: "#2563EB", fontWeight: 500 }}>
+              Ask an admin to invite you.
+            </span>
+          </p>
+
+          <p style={{ marginTop: "10px", color: "#475569" }}>
+            Or{" "}
+            <span
+              onClick={() => navigate("/demo")}
+              style={{
+                color: "#2563EB",
+                fontWeight: 600,
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              request a demo
+            </span>{" "}
+            to see SafeTrack in action.
+          </p>
+        </div>
       </div>
     </div>
   );
