@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- SafeTrack UI presets ---- */
+@layer components {
+  /* Layout & Containers */
+  .container-page { @apply min-h-[100dvh] bg-slate-50; }
+  .page-wrap     { @apply max-w-6xl mx-auto p-6; }
+
+  /* Cards */
+  .card          { @apply bg-white border rounded-2xl shadow-sm; }
+  .card-pad      { @apply p-6; }
+
+  /* Typography */
+  .page-title    { @apply text-3xl font-extrabold text-slate-900 text-center; }
+  .page-sub      { @apply text-slate-500 text-center mb-6; }
+
+  /* Buttons */
+  .btn           { @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition; }
+  .btn-primary   { @apply btn text-white bg-sky-600 hover:bg-sky-700; }
+  .btn-muted     { @apply btn border border-slate-300 text-slate-700 hover:bg-slate-50; }
+  .btn-chip      { @apply px-3 py-1.5 rounded-lg border text-sm; }
+
+  /* Form Inputs */
+  .input         { @apply w-full rounded-xl border border-slate-300 p-2.5 focus:outline-none focus:ring-2 focus:ring-sky-300; }
+  .select        { @apply w-full rounded-xl border border-slate-300 p-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-sky-300; }
+  .textarea      { @apply w-full rounded-xl border border-slate-300 p-2.5 focus:outline-none focus:ring-2 focus:ring-sky-300; }
+
+  /* Status Pills */
+  .status-pill   { @apply px-2 py-0.5 rounded-lg border text-xs; }
+  .status-pending    { @apply status-pill text-amber-700  border-amber-300  bg-amber-50; }
+  .status-progress   { @apply status-pill text-sky-700    border-sky-300    bg-sky-50; }
+  .status-resolved   { @apply status-pill text-emerald-700 border-emerald-300 bg-emerald-50; }
+  .status-unassigned { @apply status-pill text-slate-700  border-slate-300  bg-slate-50; }
+
+  /* Navbar */
+  .nav-shell     { @apply sticky top-0 bg-white/80 backdrop-blur border-b z-50; }
+  .nav-inner     { @apply max-w-6xl mx-auto flex items-center gap-4 px-4 py-3; }
+  .brand-chip    { @apply inline-flex h-8 w-8 items-center justify-center rounded-xl bg-sky-600 text-white text-xs font-bold; }
+  .navlink       { @apply text-sm text-slate-700 px-3 py-2 rounded-lg transition hover:bg-slate-100; }
+  .navlink-active{ @apply bg-slate-900 text-white; }
+}
